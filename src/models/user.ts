@@ -114,7 +114,7 @@ userSchema.methods.toOptimizedObject = function () {
 		enabled: this.enabled,
 		emailValidated: this.emailValidated,
 		lastLogin: this.lastLogin,
-
+		isAdmin:this.isAdmin
 	};
 };
 userSchema.methods.toPublicUser = function () {
