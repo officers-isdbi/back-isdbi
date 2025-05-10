@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - '@scarf/scarf'
+  - esbuild
+  - msgpackr-extract
+  - sharp

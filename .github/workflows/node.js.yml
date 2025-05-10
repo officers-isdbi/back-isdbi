@@ -1,0 +1,61 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+    push:
+        branches: [production]
+    pull_request:
+        branches: [production]
+
+jobs:
+    build:
+        runs-on: self-hosted
+
+        strategy:
+            matrix:
+                node-version: [22.x]
+
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                submodules: recursive
+                token: ${{ secrets.PAT_FOR_COMMON_REPOS }}
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "npm"
+            - name: Install packages
+              run: npm ci
+            - name: build the application
+              run: npm run build
+            - name: Delete old serve
+              run: pm2 delete ecosystem.config.cjs || true
+            - name: Start new serve
+              run: pm2 start ecosystem.config.cjs
+              env:
+                OI_CORS_ORIGIN: ${{ secrets.OI_CORS_ORIGIN }}
+                OI_MONGODB_DB_URI_WITHOUT_CREDENTIALS: ${{ secrets.OI_MONGODB_DB_URI_WITHOUT_CREDENTIALS }}
+                OI_MONGODB_DB_USERNAME: ${{ secrets.OI_MONGODB_DB_USERNAME }}
+                OI_MONGODB_DB_PASSWORD: ${{ secrets.OI_MONGODB_DB_PASSWORD }}
+                OI_MONGODB_DB_DATABASE: ${{ secrets.OI_MONGODB_DB_DATABASE }}
+                OI_REDIS_DB_PASSWORD: ${{ secrets.OI_REDIS_DB_PASSWORD }}
+                OI_JWT_SECRET: ${{ secrets.OI_JWT_SECRET }}
+                OI_LOGS_DIR: ${{ secrets.OI_LOGS_DIR }}
+                OI_PUBLIC_DIR: ${{ secrets.OI_PUBLIC_DIR }}
+                OI_PUBLIC_CASH_AGE: ${{ vars.OI_PUBLIC_CASH_AGE }}
+                OI_PUBLIC_FILES_DOMAIN: ${{ vars.OI_PUBLIC_FILES_DOMAIN }}
+                OI_DOMAIN: ${{ vars.OI_DOMAIN }}
+                OI_BACK_DOMAIN: ${{ vars.OI_BACK_DOMAIN }}
+                OI_NOREPLY_EMAIL: ${{ vars.OI_NOREPLY_EMAIL }}
+                OI_EMAIL_PASSWORD: ${{ secrets.OI_EMAIL_PASSWORD }}
+                OI_EMAIL_USERNAME: ${{ secrets.OI_EMAIL_USERNAME }}
+                OI_EMAIL_HOST: ${{ vars.OI_EMAIL_HOST }}
+                OI_EMAIL_PORT: ${{ vars.OI_EMAIL_PORT }}
+                OI_EMAIL_SECURE: ${{ vars.OI_EMAIL_SECURE }}
+            - name: Save PM2 list
+              run: pm2 save
+            - name: Restart ngnix
+              run: sudo service nginx restart

@@ -1,0 +1,70 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"files": {
+		"ignore": [
+			"node_modules",
+			"dist",
+			"build",
+			"common/lib",
+			"package-lock.json",
+			"common/data/Algeria",
+			"pnpm-lock.yaml",
+			"pnpm-workspace.yaml",
+			"biome.json",
+			"common/events",
+			"tsconfig.json",
+			"tsconfig.app.json",
+			"tsconfig.seed.json",
+			"tsconfig.test.json"
+		],
+		"include": [
+			"src/**/*.ts",
+			"common/**/*.ts",
+			"seed/**/*.ts",
+			"test/**/*.ts",
+			"*.json",
+			"common/events/websites.ts"
+		]
+	},
+	"formatter": {
+		"indentStyle": "tab",
+		"indentWidth": 4,
+		"lineEnding": "lf",
+		"lineWidth": 120
+	},
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "asNeeded",
+			"jsxQuoteStyle": "single",
+			"quoteStyle": "single",
+			"semicolons": "always",
+			"trailingCommas": "es5"
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"complexity": {
+				"noForEach": "off"
+			},
+			"correctness": {
+				"noUnusedImports": "error",
+				"noUnusedPrivateClassMembers": "error",
+				"noUnusedVariables": "error"
+			},
+			"recommended": true,
+			"style": {
+				"noNonNullAssertion": "off",
+				"noUselessElse": "warn"
+			},
+			"suspicious": {
+				"noConfusingVoidType": "off",
+				"noEmptyInterface": "off",
+				"noExplicitAny": "off"
+			}
+		}
+	},
+	"organizeImports": {
+		"enabled": true
+	}
+}
