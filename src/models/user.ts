@@ -3,7 +3,6 @@ import mongoose, { Schema, model } from 'mongoose';
 import type { Expression } from 'mongoose';
 
 import { passwordSchema } from '^common/elements';
-import { replaceEmail, replacePhone } from '~common/index';
 
 import type {
 	UserD,
@@ -18,6 +17,7 @@ import type {
 import { Jwt } from '&server/jwt';
 import { compareHashes, hashPassword } from '@common/utils/password';
 import type { AnyExpression } from 'mongoose';
+import { replaceEmail, replacePhone } from '@server/utils';
 
 const required = true;
 const unique = true;
