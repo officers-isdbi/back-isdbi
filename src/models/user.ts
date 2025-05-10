@@ -118,9 +118,7 @@ userSchema.methods.toOptimizedObject = function () {
 	};
 };
 userSchema.methods.toPublicUser = function () {
-	return {
-		...this.toOptimizedObject(),
-	};
+	return this.toOptimizedObject();
 };
 userSchema.methods.generateAuthToken = async function () {
 	const nowDate = Math.floor(Date.now() / 1000);

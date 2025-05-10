@@ -17,7 +17,7 @@ export const CheckAuth = async (req: ERequest<UserDocumentI, any, ResponseI<User
 	const serviceResponse = new ServiceResponse<UserAuthI>(
 		ResponseStatus.Success,
 		'Welcome back!',
-		{ user: user.toPublicUser() },
+		{ user: user.toOptimizedObject() },
 		StatusCodes.OK
 	);
 	handleServiceResponse(serviceResponse, res);
